@@ -9,13 +9,11 @@ class Home extends React.Component {
   }
 
   render() {
-    const {app} = this.props
-
     return (
       <div id="Home">
         <div className="container">
           <div className="full-width center">
-            <LoginBtn user={app.user} />
+            <LoginBtn {...this.props}/>
           </div>
         </div>
       </div>

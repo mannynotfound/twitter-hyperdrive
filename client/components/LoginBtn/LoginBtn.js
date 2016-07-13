@@ -5,18 +5,18 @@ class LoginBtn extends React.Component {
   static displayName = 'LoginBtn'
 
   static propTypes = {
-    'user': PropTypes.object,
+    'app': PropTypes.object,
   }
 
   render() {
-    const {user} = this.props
+    const {app} = this.props
 
     return (
       <div id="LoginBtn" key="login">
         <div className="divider" />
         <div className="box">
           <div className="icon" />
-          {user ?
+          {app && app.tweets ?
             <Link to="/setup">
               {'Get Started! ->'}
             </Link>

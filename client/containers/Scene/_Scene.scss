@@ -1,17 +1,5 @@
-#Setup h2 {
-  font-size: 16px;
-  color: $twitterColor;
-}
-
-#Setup-profile {
-  float: left;
-  max-width: 47.5%;
-  width: auto;
-  margin-right: 5%;
-}
-
-#Setup-tweet {
-  float: left;
-  max-width: 47.5%;
-  width: auto;
+.stream-element {
+  border: 3px solid #ccc;
+  background: white;
+  z-index: 10;
 }

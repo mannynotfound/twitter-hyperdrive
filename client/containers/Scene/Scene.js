@@ -16,7 +16,8 @@ class Scene extends React.Component {
   componentDidMount() {
     const container = findDOMNode(this.refs.scene)
     const {tweets} = this.props
-    const htmlElms = this.createHTML(tweets)
+    this.visibleTweets = tweets.slice(0, 50)
+    const htmlElms = this.createHTML(this.visibleTweets)
     const cfg = {
       mountCb: (obj) => {
         const idx = parseInt(obj.name.replace('stream_element_', ''), 10)

@@ -43,7 +43,7 @@ router.get('/fetchTweets/:cookie', (req, res) => {
   const {cookie} = req.params
   if (cookie) req.cookies[process.env.COOKIE_NAME] = cookie
 
-  oAuth.apiCall(req, 'GET', '/statuses/user_timeline.json', {}, (err, resp, json) => {
+  oAuth.apiCall(req, 'GET', '/statuses/user_timeline.json', {count: 200}, (err, resp, json) => {
     if (err) handleError(err, res)
     else res.json(json).end()
   })

@@ -16,6 +16,11 @@ export default {
     publicPath: '/'
   },
   module: {
+    resolve: {
+      alias: {
+        'html-hyperdrive': path.resolve(__dirname, '../html-hyperdrive/index.js')
+      }
+    },
     preLoaders: DEBUG ? [
       {
         test: /\.js$/,
