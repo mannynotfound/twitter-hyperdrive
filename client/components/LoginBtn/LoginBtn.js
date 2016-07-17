@@ -16,7 +16,7 @@ class LoginBtn extends React.Component {
         <div className="divider" />
         <div className="box">
           <div className="icon" />
-          {app && app.tweets ?
+          {app && app.user ?
             <Link to="/setup">
               {'Get Started! ->'}
             </Link>

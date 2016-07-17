@@ -55,6 +55,7 @@
     "querystring": "^0.2.0",
     "react": "^15.1.0",
     "react-dom": "^15.1.0",
+    "react-loading": "0.0.9",
     "react-redux": "^4.4.5",
     "react-router": "~2.0.0",
     "react-tweet": "^1.0.22",

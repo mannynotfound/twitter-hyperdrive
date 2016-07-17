@@ -3,7 +3,7 @@ import React, {Component, PropTypes, cloneElement} from 'react'
 import {bindActionCreators} from 'redux'
 import {connect} from 'react-redux'
 import cn from 'classnames'
-import {isEqual, omit, cloneDeep} from 'lodash'
+import {isEqual, omit, cloneDeep, get} from 'lodash'
 
 export class App extends Component {
   static propTypes = {
@@ -26,13 +26,14 @@ export class App extends Component {
   }
 
   componentDidMount() {
-    if (this.props.client.cookie) {
-      this.props.actions.fetchTweets(this.props.client.cookie)
-    }
+    const cookie = get(this.props, 'client.cookie', null)
+    this.props.actions.fetchTweetData(cookie)
   }
 
   componentDidUpdate(prevProps) {
-    if (!isEqual(prevProps.params, this.props.params)) window.scrollTo(0, 0)
+    if (!isEqual(prevProps.params, this.props.params)) {
+      window.scrollTo(0, 0)
+    }
   }
 
   render() {

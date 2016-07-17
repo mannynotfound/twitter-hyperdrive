@@ -1,4 +1,5 @@
 import React, {PropTypes} from 'react'
+import Loading from 'react-loading'
 import LoginBtn from '../../components/LoginBtn/LoginBtn'
 
 class Home extends React.Component {
@@ -9,11 +10,18 @@ class Home extends React.Component {
   }
 
   render() {
+    const {app} = this.props
+    const notRequested = app && app.user === undefined
+
     return (
       <div id="Home">
         <div className="container">
           <div className="full-width center">
-            <LoginBtn {...this.props}/>
+          {!notRequested ?
+            <LoginBtn {...this.props}/> :
+            <div className="Loader">
+              <Loading type="spinningBubbles" color="#0aaaf5" />
+            </div>}
           </div>
         </div>
       </div>

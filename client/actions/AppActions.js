@@ -35,9 +35,17 @@ export function fetchTweetsSuccess(tweets) {
   }
 }
 
+export function fetchTweetDataSuccess(user, tweets) {
+  return {
+    type: types.FETCH_TWEET_DATA_SUCCESS,
+    user,
+    tweets,
+  }
+}
+
 export function fetchUser(cookie) {
   return (dispatch) => (
-    fetch(`${API}/getUser/${cookie}`)
+    fetch(`${API}/fetchUser/${cookie}`)
       .then((response) => response.json())
       .then((json) => dispatch(fetchUserSuccess(json)))
       .catch((error) => console.log(error))
@@ -49,6 +57,27 @@ export function fetchTweets(cookie) {
     fetch(`${API}/fetchTweets/${cookie}`)
       .then((response) => response.json())
       .then((json) => dispatch(fetchTweetsSuccess(json)))
+      .catch((error) => console.log(error))
+  )
+}
+
+export function fetchTweetData(cookie) {
+  if (!cookie) {
+    return (dispatch) => (
+      dispatch({
+        type: types.FETCH_TWEETS_FAILURE
+      })
+    )
+  }
+
+  return (dispatch) => (
+    fetch(`${API}/fetchUser/${cookie}`)
+      .then((userResp) => userResp.json())
+      .then((user) => {
+        fetch(`${API}/fetchTweets/${cookie}`)
+        .then((tweetsResp) => tweetsResp.json())
+        .then((tweets) => dispatch(fetchTweetDataSuccess(user, tweets)))
+      })
       .catch((error) => console.log(error))
   )
 }
