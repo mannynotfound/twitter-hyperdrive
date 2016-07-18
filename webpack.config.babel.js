@@ -19,7 +19,8 @@ export default {
     preLoaders: DEBUG ? [
       {
         test: /\.js$/,
-        loader: 'eslint-loader'
+        loader: 'eslint-loader',
+        exclude: [/node_modules/, /html-hyperdrive/],
       }
     ] : [],
     loaders: [
@@ -36,7 +37,7 @@ export default {
       {
         test: /\.js$/,
         loader: 'babel',
-        exclude: /node_modules/,
+        exclude: [/node_modules/, /html-hyperdrive/],
         query: DEBUG ? {
           plugins: [['react-transform', {
             transforms: [{
@@ -56,7 +57,12 @@ export default {
         loader: `url?limit=10000&name=[name]${DEBUG ? '' : '.[hash:7]'}.[ext]`,
         exclude: /node_modules/
       }
-    ]
+    ],
+  },
+  resolve: {
+    alias: {
+      'html-hyperdrive': path.resolve(__dirname, '../html-hyperdrive/')
+    }
   },
   plugins: [
     new AssetsPlugin({

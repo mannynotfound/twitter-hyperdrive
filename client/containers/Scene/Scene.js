@@ -15,14 +15,16 @@ class Scene extends React.Component {
 
   componentDidMount() {
     const container = findDOMNode(this.refs.scene)
-    const {tweets} = this.props
     /* eslint-disable no-param-reassign */
-    this.visibleTweets = tweets.slice(0, 50).map((t, i) => {
-      t.index = i
-      return t
+    const tweets = this.props.tweets.map((t, i) => {
+      const newTweet = {...t}
+      newTweet.index = i
+      return newTweet
     })
 
-    this.usedTweets = []
+    const limit = 50
+    this.visibleTweets = tweets.slice(0, limit)
+
     const htmlElms = this.createHTML(this.visibleTweets)
     const cfg = {
       mountCb: this.mountObj.bind(this)
@@ -32,39 +34,21 @@ class Scene extends React.Component {
     this.scene = new HTMLHyperdrive(container, htmlElms, cfg)
     this.scene.startScene()
 
+    if (tweets.length <= limit) {
+      return
+    }
+
+    this.invisibleTweets = tweets.slice(limit)
+
     setInterval(() => {
-      let next = null
-
-      tweets.forEach((t) => {
-        if (next) return
-
-        const id = t.id
-        let used = false
-        this.visibleTweets.forEach((v) => {
-          if (used) return
-          if (v.id === id || this.usedTweets.indexOf(id) > -1) {
-            used = true
-          }
-        })
-
-        if (!used) {
-          next = t
-        }
-      })
-
-      if (!next) {
-        return console.log('NO NEW TWEETS TO USE')
-      }
-
-      const first = this.visibleTweets.shift()
-      this.usedTweets.push(first.index)
-      const last = this.visibleTweets[this.visibleTweets.length - 1]
-      next.index = last.index + 1
+      const next = this.invisibleTweets.shift()
+      const remove = this.visibleTweets.shift()
+      this.invisibleTweets.push(remove)
       this.visibleTweets.push(next)
-      const opts = this.createHTML([next])[0]
-      this.scene.addObject(opts, this.visibleTweets.length)
 
-      return this.scene.removeObject(first.index)
+      const opts = this.createHTML([next])[0]
+      this.scene.removeObject(remove.index)
+      this.scene.addObject(opts, next.index)
     }, 15000)
   }
 
