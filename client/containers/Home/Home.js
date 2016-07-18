@@ -20,7 +20,10 @@ class Home extends React.Component {
           {!notRequested ?
             <LoginBtn {...this.props}/> :
             <div className="Loader">
-              <Loading type="spinningBubbles" color="#0aaaf5" />
+              <Loading
+                delay={-1}
+                type="spinningBubbles"
+                color="#0aaaf5" />
             </div>}
           </div>
         </div>
