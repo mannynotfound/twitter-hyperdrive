@@ -1,6 +1,7 @@
 import React, {PropTypes} from 'react'
 import {findDOMNode, render} from 'react-dom'
 import Tweet from 'react-tweet'
+import {isEqual} from 'lodash'
 
 class Scene extends React.Component {
   static displayName = 'Scene'
@@ -9,11 +10,36 @@ class Scene extends React.Component {
     tweets: PropTypes.array
   }
 
+  constructor(props) {
+    super(props)
+    this.cycle = true
+  }
+
   shouldComponentUpdate() {
     return false
   }
 
+  componentWillReceiveProps(props) {
+    console.log('CWRP! ', props)
+    if (!isEqual(props.tweets, this.props.tweets)) {
+      this.resetScene()
+    }
+  }
+
   componentDidMount() {
+    this.createNewScene()
+  }
+
+  resetScene() {
+    console.log('RESETTING SCENE')
+    this.cycle = false
+    this.scene.removeAll(() => {
+       this.cycle = true
+       this.createNewScene()
+    })
+  }
+
+  createNewScene() {
     const container = findDOMNode(this.refs.scene)
     /* eslint-disable no-param-reassign */
     const tweets = this.props.tweets.map((t, i) => {
@@ -41,12 +67,14 @@ class Scene extends React.Component {
     this.invisibleTweets = tweets.slice(limit)
 
     setInterval(() => {
+      if (!this.cycle) return
+
       const next = this.invisibleTweets.shift()
       const remove = this.visibleTweets.shift()
       this.invisibleTweets.push(remove)
       this.visibleTweets.push(next)
 
-      const opts = this.createHTML([next])[0]
+      const opts = this.createHTML(next)
       this.scene.removeObject(remove.index)
       this.scene.addObject(opts, next.index)
     }, 15000)
@@ -58,13 +86,19 @@ class Scene extends React.Component {
   }
 
   createHTML(tweets) {
-    return tweets.map(() => ({
+    const tweetHTML = {
       style: {
         width: '590px',
         height: 'auto',
       },
       html: '<div></div>'
-    }))
+    }
+
+    if (Array.isArray(tweets)) {
+      return tweets.map(() => ({...tweetHTML}))
+    }
+
+    return {...tweetHTML}
   }
 
   render() {
@@ -75,4 +109,3 @@ class Scene extends React.Component {
 }
 
 export default Scene
-

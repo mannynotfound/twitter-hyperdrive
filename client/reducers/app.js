@@ -18,6 +18,9 @@ export default function app(state = {}, action) {
       newState.user = null
       newState.tweets = []
       return newState
+    case types.SEARCH_TWEETS_SUCCESS:
+      newState.tweets = action.tweets
+      return newState
     default:
       return newState
   }

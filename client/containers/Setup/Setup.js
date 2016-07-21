@@ -1,5 +1,6 @@
 import React, {PropTypes} from 'react'
 import Scene from '../Scene/Scene'
+import Search from '../../components/Search/Search'
 
 class Setup extends React.Component {
   static displayName = 'Setup'
@@ -14,6 +15,7 @@ class Setup extends React.Component {
 
     return (
       <div id="Scene-wrap" className="full-width">
+        <Search {...this.props} />
         <Scene tweets={tweets} />
       </div>
     )

@@ -28,7 +28,6 @@ router.get('/logout-twitter', (req, res) => {
 })
 
 router.get('/fetchUser/:cookie', (req, res) => {
-  // isomorphic fetch doesnt handle cookies well
   const {cookie} = req.params
   if (cookie) req.cookies[process.env.COOKIE_NAME] = cookie
 
@@ -39,11 +38,23 @@ router.get('/fetchUser/:cookie', (req, res) => {
 })
 
 router.get('/fetchTweets/:cookie', (req, res) => {
-  // isomorphic fetch doesnt handle cookies well
   const {cookie} = req.params
   if (cookie) req.cookies[process.env.COOKIE_NAME] = cookie
 
   oAuth.apiCall(req, 'GET', '/statuses/user_timeline.json', {count: 200}, (err, resp, json) => {
+    if (err) handleError(err, res)
+    else res.json(json).end()
+  })
+})
+
+router.get('/searchTweets/:cookie/:term', (req, res) => {
+  const {cookie, term} = req.params
+  if (cookie) req.cookies[process.env.COOKIE_NAME] = cookie
+
+  oAuth.apiCall(req, 'GET', '/search/tweets.json', {
+    q: term,
+    count: 100,
+  }, (err, resp, json) => {
     if (err) handleError(err, res)
     else res.json(json).end()
   })

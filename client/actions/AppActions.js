@@ -43,6 +43,13 @@ export function fetchTweetDataSuccess(user, tweets) {
   }
 }
 
+export function searchTweetsSuccess(tweets) {
+  return {
+    type: types.SEARCH_TWEETS_SUCCESS,
+    tweets,
+  }
+}
+
 export function fetchUser(cookie) {
   return (dispatch) => (
     fetch(`${API}/fetchUser/${cookie}`)
@@ -57,6 +64,15 @@ export function fetchTweets(cookie) {
     fetch(`${API}/fetchTweets/${cookie}`)
       .then((response) => response.json())
       .then((json) => dispatch(fetchTweetsSuccess(json)))
+      .catch((error) => console.log(error))
+  )
+}
+
+export function searchTweets(term, cookie) {
+  return (dispatch) => (
+    fetch(`${API}/searchTweets/${cookie}/${term}`)
+      .then((response) => response.json())
+      .then((json) => dispatch(searchTweetsSuccess(json.statuses)))
       .catch((error) => console.log(error))
   )
 }
