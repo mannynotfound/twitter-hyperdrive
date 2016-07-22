@@ -20,7 +20,6 @@ class Scene extends React.Component {
   }
 
   componentWillReceiveProps(props) {
-    console.log('CWRP! ', props)
     if (!isEqual(props.tweets, this.props.tweets)) {
       this.resetScene()
     }
@@ -31,11 +30,10 @@ class Scene extends React.Component {
   }
 
   resetScene() {
-    console.log('RESETTING SCENE')
     this.cycle = false
     this.scene.removeAll(() => {
-       this.cycle = true
-       this.createNewScene()
+      this.cycle = true
+      this.createNewScene()
     })
   }
 
@@ -66,7 +64,8 @@ class Scene extends React.Component {
 
     this.invisibleTweets = tweets.slice(limit)
 
-    setInterval(() => {
+    clearInterval(this.timer)
+    this.timer = setInterval(() => {
       if (!this.cycle) return
 
       const next = this.invisibleTweets.shift()
